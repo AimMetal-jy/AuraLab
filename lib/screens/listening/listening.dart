@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:auralab/animation/expandable_action_buttons.dart';
+import 'package:auralab/screens/listening/animation/expandable_action_buttons.dart';
 import 'package:auralab/screens/listening/subpage/file.dart';
 import 'package:auralab/screens/listening/subpage/author.dart';
 import 'package:auralab/screens/listening/subpage/playlist.dart';
