@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:auralab/screens/listening/animation/expandable_action_buttons.dart';
-import 'package:auralab/screens/listening/subpage/file.dart';
-import 'package:auralab/screens/listening/subpage/author.dart';
-import 'package:auralab/screens/listening/subpage/playlist.dart';
+import 'package:auralab/screens/menu/animation/expandable_action_buttons.dart';
+import 'package:auralab/screens/menu/subpage/file.dart';
+import 'package:auralab/screens/menu/subpage/author.dart';
+import 'package:auralab/screens/menu/subpage/playlist.dart';
 
 /// 页面索引状态管理
 class ListeningTabState extends InheritedNotifier<ValueNotifier<int>> {
