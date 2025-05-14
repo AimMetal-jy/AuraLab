@@ -4,3 +4,5 @@
 A learning assistant ready to use with any corpus
 
 前端：Flutter
+
+后端：Python
