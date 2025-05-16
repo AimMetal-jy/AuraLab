@@ -7,16 +7,18 @@ class ExpandableActionButtons extends StatefulWidget {
   const ExpandableActionButtons({super.key});
 
   @override
-  State<ExpandableActionButtons> createState() => _ExpandableActionButtonsState();
+  State<ExpandableActionButtons> createState() =>
+      _ExpandableActionButtonsState();
 }
 
-class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with SingleTickerProviderStateMixin {
+class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
+    with SingleTickerProviderStateMixin {
   // 控制按钮是否展开的状态
   bool _isExpanded = false;
-  
+
   // 动画控制器
   late AnimationController _animationController;
-  
+
   @override
   void initState() {
     super.initState();
@@ -25,13 +27,13 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with 
       vsync: this,
     );
   }
-  
+
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
-  
+
   // 切换按钮展开/收起状态
   void _toggleExpand() {
     setState(() {
@@ -55,13 +57,14 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with 
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
           child: ElevatedButton(
-            onPressed: _isExpanded ? () {
-              // 图片按钮点击逻辑
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('添加图片'))
-              );
-              _toggleExpand(); // 点击后收起菜单
-            } : null,
+            onPressed: _isExpanded
+                ? () {
+                    // 图片按钮点击逻辑
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(content: Text('添加图片')));
+                    _toggleExpand(); // 点击后收起菜单
+                  }
+                : null,
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(16),
@@ -76,7 +79,7 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with 
             ),
           ),
         ),
-        
+
         // 文本按钮
         AnimatedPositioned(
           right: _isExpanded ? 30 : 30, // 展开时向上方移动
@@ -84,13 +87,14 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with 
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
           child: ElevatedButton(
-            onPressed: _isExpanded ? () {
-              // 文本按钮点击逻辑
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('添加文本'))
-              );
-              _toggleExpand(); // 点击后收起菜单
-            } : null,
+            onPressed: _isExpanded
+                ? () {
+                    // 文本按钮点击逻辑
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(content: Text('添加文本')));
+                    _toggleExpand(); // 点击后收起菜单
+                  }
+                : null,
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(16),
@@ -105,7 +109,7 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with 
             ),
           ),
         ),
-        
+
         // 音频按钮
         AnimatedPositioned(
           right: _isExpanded ? 135 : 30, // 展开时向右上方移动
@@ -113,13 +117,14 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with 
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
           child: ElevatedButton(
-            onPressed: _isExpanded ? () {
-              // 音频按钮点击逻辑
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('添加音频'))
-              );
-              _toggleExpand(); // 点击后收起菜单
-            } : null,
+            onPressed: _isExpanded
+                ? () {
+                    // 音频按钮点击逻辑
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(content: Text('添加音频')));
+                    _toggleExpand(); // 点击后收起菜单
+                  }
+                : null,
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(16),
@@ -150,7 +155,8 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons> with 
             child: Container(
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
-                color: _isExpanded ? Colors.red : Theme.of(context).primaryColor,
+                color:
+                    _isExpanded ? Colors.red : Theme.of(context).primaryColor,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
