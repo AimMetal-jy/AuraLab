@@ -1,9 +1,5 @@
-import 'package:auralab/screens/listening/listening.dart';
 import 'package:flutter/material.dart';
-import '../settings/settings.dart';
-import '../notes/notes.dart';
-import '../translate/translate.dart';
-import '../vocabulary/vocabulary.dart';
+import 'package:auralab/routes/app_routes.dart';
 import '../../util/buttons/menu_button.dart';
 
 class DrawerMenu extends StatelessWidget {
@@ -33,9 +29,9 @@ class DrawerMenu extends StatelessWidget {
           MenuButton(
             text: '听力',
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.pushReplacementNamed(
                 context,
-                MaterialPageRoute(builder: (context) => const ListeningPage()),
+                AppRoutes.listening,
               );
             },
           ),
@@ -43,9 +39,19 @@ class DrawerMenu extends StatelessWidget {
           MenuButton(
             text: '生词本',
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.pushReplacementNamed(
                 context,
-                MaterialPageRoute(builder: (context) => const VocabularyPage()),
+                AppRoutes.vocabulary,
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          MenuButton(
+            text: '笔记',
+            onPressed: () {
+              Navigator.pushReplacementNamed(
+                context,
+                AppRoutes.notes,
               );
             },
           ),
@@ -53,19 +59,9 @@ class DrawerMenu extends StatelessWidget {
           MenuButton(
             text: '翻译练习',
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.pushReplacementNamed(
                 context,
-                MaterialPageRoute(builder: (context) => const TranslatePage()),
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          MenuButton(
-            text: '批注',
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const Notes()),
+                AppRoutes.translate,
               );
             },
           ),
@@ -77,9 +73,9 @@ class DrawerMenu extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: (context) => const Settings()),
+                    AppRoutes.settings,
                   );
                 },
                 backgroundColor: Colors.grey[400],
