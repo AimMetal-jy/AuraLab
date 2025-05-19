@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 /// 可展开按钮组件
 /// 包含一个主按钮和三个子按钮，长按主按钮可以展开/收起子按钮
+/// 用于提供多个操作选项，节省界面空间
 class ExpandableActionButtons extends StatefulWidget {
   const ExpandableActionButtons({super.key});
 
@@ -16,21 +17,21 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
   // 控制按钮是否展开的状态
   bool _isExpanded = false;
 
-  // 动画控制器
+  // 动画控制器，用于控制展开/收起的动画效果
   late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300), // 动画持续时间
       vsync: this,
     );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController.dispose(); // 释放动画控制器资源
     super.dispose();
   }
 
@@ -39,9 +40,9 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
     setState(() {
       _isExpanded = !_isExpanded;
       if (_isExpanded) {
-        _animationController.forward();
+        _animationController.forward(); // 播放展开动画
       } else {
-        _animationController.reverse();
+        _animationController.reverse(); // 播放收起动画
       }
     });
   }
@@ -55,7 +56,7 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
           right: _isExpanded ? 100 : 30, // 展开时向左上方移动
           bottom: _isExpanded ? 120 : 50, // 展开时向左上方移动
           duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+          curve: Curves.easeOut, // 使用缓出曲线使动画更自然
           child: ElevatedButton(
             onPressed: _isExpanded
                 ? () {
@@ -66,14 +67,14 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
                   }
                 : null,
             style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
+              shape: const CircleBorder(), // 圆形按钮
               padding: const EdgeInsets.all(16),
               backgroundColor: _isExpanded ? Colors.green : Colors.transparent,
               foregroundColor: Colors.white,
-              elevation: _isExpanded ? 6 : 0,
+              elevation: _isExpanded ? 6 : 0, // 展开时有阴影，收起时无阴影
             ),
             child: AnimatedOpacity(
-              opacity: _isExpanded ? 1.0 : 0.0,
+              opacity: _isExpanded ? 1.0 : 0.0, // 展开时显示，收起时隐藏
               duration: const Duration(milliseconds: 300),
               child: const Icon(Icons.image),
             ),
@@ -85,7 +86,7 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
           right: _isExpanded ? 30 : 30, // 展开时向上方移动
           bottom: _isExpanded ? 150 : 50, // 展开时向上方移动
           duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+          curve: Curves.easeOut, // 使用缓出曲线使动画更自然
           child: ElevatedButton(
             onPressed: _isExpanded
                 ? () {
@@ -96,7 +97,7 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
                   }
                 : null,
             style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
+              shape: const CircleBorder(), // 圆形按钮
               padding: const EdgeInsets.all(16),
               backgroundColor: _isExpanded ? Colors.blue : Colors.transparent,
               foregroundColor: Colors.white,

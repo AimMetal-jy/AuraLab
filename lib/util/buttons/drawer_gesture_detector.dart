@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 /// DrawerGestureDetector
 /// 用于检测左右滑动手势并自动打开/关闭Scaffold的Drawer
 /// 优化版本：使用Scaffold.maybeOf方法获取ScaffoldState，并添加边缘检测功能
+/// 提供更好的用户体验，允许用户通过滑动手势操作抽屉菜单
 class DrawerGestureDetector extends StatefulWidget {
+  /// 子组件，通常是应用的主要内容
   final Widget child;
+  /// 触发抽屉操作的最小拖动距离
   final double minDragDistance;
+  /// 触发抽屉操作的最小速度
   final double minVelocity;
   
   /// 边缘检测宽度，只有从屏幕左边缘这个距离内开始的滑动才会触发打开抽屉
@@ -17,9 +21,9 @@ class DrawerGestureDetector extends StatefulWidget {
   const DrawerGestureDetector({
     super.key,
     required this.child,
-    this.minDragDistance = 20.0,
-    this.minVelocity = 300.0,
-    this.edgeDragWidth = 20.0,
+    this.minDragDistance = 20.0, // 默认最小拖动距离
+    this.minVelocity = 300.0, // 默认最小速度
+    this.edgeDragWidth = 20.0, // 默认边缘检测宽度
     this.onDrawerChanged,
   });
 
@@ -69,6 +73,7 @@ class _DrawerGestureDetectorState extends State<DrawerGestureDetector> {
     }
   }
 
+  // 处理拖动开始事件
   void _handleDragStart(DragStartDetails details) {
     _dragStartPosition = details.globalPosition;
     _dragDistance = 0.0;
@@ -88,6 +93,7 @@ class _DrawerGestureDetectorState extends State<DrawerGestureDetector> {
     }
   }
 
+  // 处理拖动更新事件
   void _handleDragUpdate(DragUpdateDetails details) {
     if (_dragStartPosition != null && _isValidEdgeDrag) {
       setState(() {
