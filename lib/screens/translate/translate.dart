@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:auralab/util/widgets/tab/tabbed_page_scaffold.dart'; // 带标签页的脚手架组件
+import 'package:auralab/util/widgets/tab/tabpage_scaffold.dart'; // 带标签页的脚手架组件
 import 'package:auralab/util/buttons/expandable_action_buttons.dart'; // 可展开的操作按钮组件
 
 /// 翻译练习页面主组件
 /// 
-/// 使用统一的TabbedPageScaffold实现带标签页的页面布局
+/// 使用统一的TabPageScaffold实现带标签页的页面布局
 /// 包含英译中、中译英和收藏三个子页面，用于提供不同方向的翻译练习功能
 class TranslatePage extends StatelessWidget {
   /// 创建一个TranslatePage实例
@@ -14,7 +14,7 @@ class TranslatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabbedPageScaffold(
+    return TabPageScaffold(
       // 页面标题
       title: '翻译练习',
       // 标题图标
@@ -28,7 +28,7 @@ class TranslatePage extends StatelessWidget {
         FavoritesPage(),
       ],
       // 用户名称，显示在抽屉菜单中
-      userName: 'AimMetal',
+      userName: '大富翁',
       // 可展开的浮动操作按钮
       floatingActionButton: const ExpandableActionButtons(),
       // 注意：这里没有设置showDrawer属性，默认不显示抽屉菜单
