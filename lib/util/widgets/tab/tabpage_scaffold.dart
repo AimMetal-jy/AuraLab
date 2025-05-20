@@ -9,19 +9,25 @@ import 'package:auralab/screens/menu/menu.dart';
 class TabPageScaffold extends StatefulWidget {
   /// 页面标题文本
   final String title;
+
   /// 页面标题图标
   final IconData titleIcon;
+
   /// 标签页标题列表
   final List<String> tabTitles;
+
   /// 对应的标签页内容组件列表
   final List<Widget> tabPages;
+
   /// 浮动操作按钮
   final Widget? floatingActionButton;
+
   /// 用户名称，显示在抽屉菜单中
   final String userName;
+
   /// 是否显示抽屉菜单
   final bool showDrawer;
-  
+
   const TabPageScaffold({
     super.key,
     required this.title,
@@ -37,13 +43,15 @@ class TabPageScaffold extends StatefulWidget {
   State<TabPageScaffold> createState() => _TabPageScaffoldState();
 }
 
-class _TabPageScaffoldState extends State<TabPageScaffold> with SingleTickerProviderStateMixin {
+class _TabPageScaffoldState extends State<TabPageScaffold>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: widget.tabTitles.length, vsync: this);
+    _tabController =
+        TabController(length: widget.tabTitles.length, vsync: this);
   }
 
   @override
@@ -63,7 +71,8 @@ class _TabPageScaffoldState extends State<TabPageScaffold> with SingleTickerProv
             children: [
               Icon(widget.titleIcon, color: Colors.black), // 标题图标
               const SizedBox(width: 5), // 图标和文字间距
-              Text(widget.title, style: const TextStyle(color: Colors.black)), // 标题文字
+              Text(widget.title,
+                  style: const TextStyle(color: Colors.black)), // 标题文字
               const SizedBox(width: 15), // 右侧间距
             ],
           ),
@@ -88,6 +97,8 @@ class _TabPageScaffoldState extends State<TabPageScaffold> with SingleTickerProv
             indicatorSize: TabBarIndicatorSize.tab,
             labelPadding: const EdgeInsets.symmetric(horizontal: 10),
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            splashFactory: NoSplash.splashFactory, // 禁用点击水波纹效果
+            overlayColor: WidgetStateProperty.all(Colors.transparent), // 禁用点击覆盖层
           ),
         ),
         body: Stack(
@@ -101,11 +112,13 @@ class _TabPageScaffoldState extends State<TabPageScaffold> with SingleTickerProv
               ),
             ),
             // 浮动按钮
-            if (widget.floatingActionButton != null) widget.floatingActionButton!,
+            if (widget.floatingActionButton != null)
+              widget.floatingActionButton!,
           ],
         ),
-        drawer: widget.showDrawer ? DrawerMenu(userName: widget.userName) : null,
-        drawerEdgeDragWidth: MediaQuery.of(context).size.width/3,
+        drawer:
+            widget.showDrawer ? DrawerMenu(userName: widget.userName) : null,
+        drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
       ),
     );
   }
