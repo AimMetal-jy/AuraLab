@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auralab/util/widgets/tab/tabpage_scaffold.dart'; // 带标签页的脚手架组件
 import 'package:auralab/util/buttons/expandable_action_buttons.dart'; // 可展开的操作按钮组件
-
+import 'package:auralab/screens/translate/translate_display_page.dart';
 /// 翻译练习页面主组件
 /// 
 /// 使用统一的TabPageScaffold实现带标签页的页面布局
@@ -67,9 +67,17 @@ class ChineseToEnglishPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 居中显示占位文本
-    return const Center(
-      child: Text('中译英内容区域'),
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TranslateDisplayPage(),
+            ),
+          );
+        },
+        child: Text('进入翻译展示页'),
+      ),
     );
   }
 }
@@ -92,3 +100,6 @@ class FavoritesPage extends StatelessWidget {
     );
   }
 }
+
+
+
