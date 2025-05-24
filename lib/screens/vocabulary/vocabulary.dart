@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auralab/util/widgets/tab/tabpage_scaffold.dart'; // 带标签页的脚手架组件
 import 'package:auralab/util/buttons/expandable_action_buttons.dart'; // 可展开的操作按钮组件
+import 'package:auralab/screens/vocabulary/vocabulary_display_page.dart'; 
 
 /// 生词本页面主组件
 /// 
@@ -20,7 +21,7 @@ class VocabularyPage extends StatelessWidget {
       // 标题图标
       titleIcon: Icons.book,
       // 标签页标题列表
-      tabTitles: const ['全部', '标记', '分类'],
+      tabTitles: const ['文件', '作者', '歌单'],
       // 对应的标签页内容组件
       tabPages: const [
         AllWordsPage(),
@@ -28,7 +29,7 @@ class VocabularyPage extends StatelessWidget {
         CategoriesPage(),
       ],
       // 用户名称，显示在抽屉菜单中
-      userName: '大饼象男',
+      userName: 'Whitersmile',
       // 可展开的浮动操作按钮
       floatingActionButton: const ExpandableActionButtons(),
       // 注意：这里没有设置showDrawer属性，默认不显示抽屉菜单
@@ -36,10 +37,8 @@ class VocabularyPage extends StatelessWidget {
   }
 }
 
-/// 全部单词页面
-/// 
-/// 显示用户添加的所有生词
-/// 目前显示占位内容，等待实际功能实现
+
+
 class AllWordsPage extends StatelessWidget {
   /// 创建一个AllWordsPage实例
   /// 
@@ -48,17 +47,37 @@ class AllWordsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 居中显示占位文本
-    return const Center(
-      child: Text('全部单词内容区域'),
+    // 居中显示按钮，点击后跳转到单词详情页面
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const VocabularyDisplayPage(
+                fileName: '示例单词文件',
+              ),
+            ),
+          );
+        },
+        child: const Text('查看单词详情'),
+      ),
     );
   }
 }
 
-/// 标记单词页面
-/// 
-/// 显示用户特别标记的生词，如重点词汇、难记词汇等
-/// 目前显示占位内容，等待实际功能实现
+
+
+
+
+
+
+
+
+
+
+
+
 class MarkedWordsPage extends StatelessWidget {
   /// 创建一个MarkedWordsPage实例
   /// 
@@ -74,10 +93,6 @@ class MarkedWordsPage extends StatelessWidget {
   }
 }
 
-/// 分类页面
-/// 
-/// 按照不同类别显示生词，如学科分类、难度分类等
-/// 目前显示占位内容，等待实际功能实现
 class CategoriesPage extends StatelessWidget {
   /// 创建一个CategoriesPage实例
   /// 
@@ -89,6 +104,17 @@ class CategoriesPage extends StatelessWidget {
     // 居中显示占位文本
     return const Center(
       child: Text('分类内容区域'),
+    );
+  }
+}
+
+class CustomCategoriesPage extends StatelessWidget {
+  const CustomCategoriesPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: null,
     );
   }
 }
