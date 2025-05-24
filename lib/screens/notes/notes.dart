@@ -23,9 +23,9 @@ class Notes extends StatelessWidget {
       // 标题图标
       titleIcon: Icons.note_alt,
       // 标签页标题列表
-      tabTitles: const ['全部', '标签', '归档'],
+      tabTitles: const ['文件', '作者', '歌单','自定义分类'],
       // 对应的标签页内容组件
-      tabPages: const [NoteListPage(), NoteTagsPage(), NoteArchivePage()],
+      tabPages: const [NoteListPage(), NoteTagsPage(), NoteArchivePage(), NoteArchivePage()],
       // 可展开的浮动操作按钮
       floatingActionButton: const ExpandableActionButtons(),
       // 用户名称，显示在抽屉菜单中
