@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:auralab/screens/notes/subpage/note_display_page.dart';
+import 'package:auralab/screens/notes/note_display_page.dart';
 
 class NoteListPage extends StatelessWidget {
   const NoteListPage({super.key});
