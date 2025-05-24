@@ -20,13 +20,15 @@ class TranslatePage extends StatelessWidget {
       // 标题图标
       titleIcon: Icons.translate,
       // 标签页标题列表
-      tabTitles: const ['英译中', '中译英', '收藏'],
+      tabTitles: const ['文件', '作者', '歌单','自定义分类'],
       // 对应的标签页内容组件
       tabPages: const [
         EnglishToChinesePage(),
         ChineseToEnglishPage(),
         FavoritesPage(),
+        FavoritesPage()
       ],
+    
       // 用户名称，显示在抽屉菜单中
       userName: '大富翁',
       // 可展开的浮动操作按钮
@@ -49,8 +51,17 @@ class EnglishToChinesePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 居中显示占位文本
-    return const Center(
-      child: Text('英译中内容区域'),
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TranslateDisplayPage(),
+            ),
+          );
+        },
+        child: Text('进入翻译展示页'),
+      ),
     );
   }
 }

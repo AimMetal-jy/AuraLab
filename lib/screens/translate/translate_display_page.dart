@@ -100,9 +100,24 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(16),
-        itemCount: cardInstances.length,
+        // 增加 itemCount 以包含标题
+        itemCount: cardInstances.length + 1,
         itemBuilder: (context, index) {
-          return _buildCardInstance(cardInstances[index]);
+          // 如果是第一个项目，返回标题
+          if (index == 0) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: Text(
+                '模拟标题 - 翻译内容列表',  // 这里可以替换为从参数传入的标题
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
+          }
+          // 否则返回卡片实例，注意索引需要减1
+          return _buildCardInstance(cardInstances[index - 1]);
         },
       ),
     );
