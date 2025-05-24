@@ -21,12 +21,13 @@ class VocabularyPage extends StatelessWidget {
       // 标题图标
       titleIcon: Icons.book,
       // 标签页标题列表
-      tabTitles: const ['文件', '作者', '歌单'],
+      tabTitles: const ['文件', '作者', '歌单','自定义分类'],
       // 对应的标签页内容组件
       tabPages: const [
         AllWordsPage(),
         MarkedWordsPage(),
         CategoriesPage(),
+        CategoriesPage()
       ],
       // 用户名称，显示在抽屉菜单中
       userName: 'Whitersmile',
