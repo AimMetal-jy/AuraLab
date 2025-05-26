@@ -28,6 +28,10 @@ class MyApp extends StatelessWidget {
       routes: AppRoutes.routes,
       // 处理未知路由的回调
       onUnknownRoute: AppRoutes.onUnknownRoute,
+      // 设置iOS风格的页面切换动画
+      theme: ThemeData(
+        platform: TargetPlatform.iOS,
+      ),
     );
   }
 }
