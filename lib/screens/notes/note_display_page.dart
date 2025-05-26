@@ -7,7 +7,7 @@ class NoteDisplayPage extends StatefulWidget {
   const NoteDisplayPage({super.key, required this.title});
 
   @override
-  _NoteDisplayPageState createState() => _NoteDisplayPageState();
+  State<NoteDisplayPage> createState() => _NoteDisplayPageState();
 }
 
 class _NoteDisplayPageState extends State<NoteDisplayPage> {

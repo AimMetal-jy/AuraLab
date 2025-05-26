@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:auralab/screens/documents/documents.dart';
-// import 'package:auralab/screens/menu/menu.dart'; // 菜单页面暂未启用
 import 'package:auralab/screens/notes/notes.dart';
 import 'package:auralab/screens/settings/settings.dart';
 import 'package:auralab/screens/translate/translate.dart';
 import 'package:auralab/screens/vocabulary/vocabulary.dart';
+import 'package:auralab/screens/search/search_page.dart';
 
 /// 应用路由管理类
 /// 定义所有页面的路由常量和路由生成器
@@ -19,7 +19,7 @@ class AppRoutes {
   static const String translate = '/translate'; // 翻译页面路由
   static const String vocabulary = '/vocabulary'; // 词汇学习页面路由
   static const String settings = '/settings';   // 设置页面路由
-  
+  static const String search = '/search';       // 搜索页面路由
   /// 应用初始路由
   /// 定义应用启动时显示的第一个页面
   static const String initialRoute = documents;
@@ -33,6 +33,7 @@ class AppRoutes {
     translate: (context) => const TranslatePage(),
     vocabulary: (context) => const VocabularyPage(),
     settings: (context) => const Settings(),
+    search: (context) => const SearchPage(),
   };
   
   /// 未知路由处理器

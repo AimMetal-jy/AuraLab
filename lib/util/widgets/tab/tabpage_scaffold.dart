@@ -1,5 +1,5 @@
+import 'package:auralab/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:auralab/util/buttons/drawer_gesture_detector.dart';
 import 'package:auralab/screens/drawer/drawer.dart';
 
 /// 通用标签页脚手架
@@ -62,8 +62,8 @@ class _TabPageScaffoldState extends State<TabPageScaffold>
 
   @override
   Widget build(BuildContext context) {
-    return DrawerGestureDetector(
-      child: Scaffold(
+    return 
+      Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.grey.shade400, // 设置AppBar背景色
           title: Row(
@@ -81,7 +81,8 @@ class _TabPageScaffoldState extends State<TabPageScaffold>
             IconButton(
               icon: const Icon(Icons.search, color: Colors.black), // 搜索图标
               onPressed: () {
-                // TODO: 实现搜索功能
+                // 使用命名路由导航到搜索页面
+                Navigator.pushNamed(context, AppRoutes.search);
               },
             ),
           ],
@@ -96,9 +97,11 @@ class _TabPageScaffoldState extends State<TabPageScaffold>
             ),
             indicatorSize: TabBarIndicatorSize.tab,
             labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             splashFactory: NoSplash.splashFactory, // 禁用点击水波纹效果
-            overlayColor: WidgetStateProperty.all(Colors.transparent), // 禁用点击覆盖层
+            overlayColor:
+                WidgetStateProperty.all(Colors.transparent), // 禁用点击覆盖层
           ),
         ),
         body: Stack(
@@ -119,7 +122,7 @@ class _TabPageScaffoldState extends State<TabPageScaffold>
         drawer:
             widget.showDrawer ? DrawerMenu(userName: widget.userName) : null,
         drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
-      ),
-    );
+      );
+    
   }
 }
