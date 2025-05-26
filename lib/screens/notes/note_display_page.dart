@@ -4,7 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class NoteDisplayPage extends StatefulWidget {
   final String title; // 标题参数
   
-  const NoteDisplayPage({Key? key, required this.title}) : super(key: key);
+  const NoteDisplayPage({super.key, required this.title});
 
   @override
   _NoteDisplayPageState createState() => _NoteDisplayPageState();
@@ -75,11 +75,11 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: '搜索批注...',
-              prefixIcon: const Icon(Icons.search, size: 20),
+              prefixIcon: Icon(Icons.search, size: 20),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+              contentPadding: EdgeInsets.symmetric(vertical: 0.0),
             ),
             onChanged: (value) {
               setState(() {
@@ -101,15 +101,15 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
         ],
       ),
       body: ListView.builder(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         itemCount: _filteredNotes.length + 1, // +1 for title
         itemBuilder: (context, index) {
           if (index == 0) {
             return Padding(
-              padding: EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.only(bottom: 16),
               child: Text(
                 widget.title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

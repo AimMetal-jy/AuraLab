@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 作者页面组件
-/// 展示听力内容作者列表
+/// 展示文档内容作者列表
 class AuthorPage extends StatefulWidget {
   const AuthorPage({super.key});
 

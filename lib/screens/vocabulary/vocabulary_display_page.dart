@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class VocabularyDisplayPage extends StatefulWidget {
   final String fileName; // 文件名参数
   
-  const VocabularyDisplayPage({Key? key, required this.fileName}) : super(key: key);
+  const VocabularyDisplayPage({super.key, required this.fileName});
 
   @override
   State<VocabularyDisplayPage> createState() => _VocabularyDisplayPageState();
@@ -43,24 +43,24 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('修改释义'),
+                leading: const Icon(Icons.edit),
+                title: const Text('修改释义'),
                 onTap: () {
                   Navigator.pop(context);
                   // 这里将来会添加修改释义的逻辑
                 },
               ),
               ListTile(
-                leading: Icon(Icons.category),
-                title: Text('添加到分类'),
+                leading: const Icon(Icons.category),
+                title: const Text('添加到分类'),
                 onTap: () {
                   Navigator.pop(context);
                   // 这里将来会添加分类的逻辑
                 },
               ),
               ListTile(
-                leading: Icon(Icons.delete),
-                title: Text('删除生词'),
+                leading: const Icon(Icons.delete),
+                title: const Text('删除生词'),
                 onTap: () {
                   Navigator.pop(context);
                   // 这里将来会添加删除的逻辑
@@ -76,7 +76,7 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
   // 构建卡片视图
   Widget _buildCardView() {
     return ListView.builder(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       itemCount: _vocabularyList.length,
       itemBuilder: (context, index) {
         return _buildVocabularyCard(index);
@@ -87,7 +87,7 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
   // 构建单个词汇卡片
   Widget _buildVocabularyCard(int index) {
     return Card(
-      margin: EdgeInsets.only(bottom: 16.0),
+      margin: const EdgeInsets.only(bottom: 16.0),
       elevation: 2.0,
       child: InkWell(
         onTap: () {
@@ -101,25 +101,25 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
           _showOptionsMenu(context, index);
         },
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 _vocabularyList[index]['word'] ?? '',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               // 这里可以添加一个条件来控制释义的显示/隐藏
               // 暂时默认显示释义
               Text(
                 _vocabularyList[index]['meaning'] ?? '',
-                style: TextStyle(fontSize: 16.0),
+                style: const TextStyle(fontSize: 16.0),
               ),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 4.0),
               Text(
                 '分类: ${_vocabularyList[index]['category'] ?? '未分类'}',
-                style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 14.0, color: Colors.grey),
               ),
             ],
           ),
@@ -131,10 +131,10 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
   // 构建原文视图
   Widget _buildOriginalTextView() {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Text(
         _originalText,
-        style: TextStyle(fontSize: 16.0),
+        style: const TextStyle(fontSize: 16.0),
       ),
     );
   }
@@ -144,7 +144,7 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -152,7 +152,7 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
         title: Text(widget.fileName),
         actions: [
           PopupMenuButton<String>(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onSelected: (value) {
               if (value == 'toggle_view') {
                 setState(() {
@@ -167,7 +167,7 @@ class _VocabularyDisplayPageState extends State<VocabularyDisplayPage> {
                 value: 'toggle_view',
                 child: Text(_isCardMode ? '切换到原文视图' : '切换到卡片视图'),
               ),
-              PopupMenuItem<String>(
+              const PopupMenuItem<String>(
                 value: 'export',
                 child: Text('导出生词表'),
               ),

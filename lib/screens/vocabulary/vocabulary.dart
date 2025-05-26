@@ -110,7 +110,7 @@ class CategoriesPage extends StatelessWidget {
 }
 
 class CustomCategoriesPage extends StatelessWidget {
-  const CustomCategoriesPage({Key? key}) : super(key: key);
+  const CustomCategoriesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

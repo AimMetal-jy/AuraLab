@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 歌单页面组件
-/// 展示听力内容歌单列表
+/// 展示文档内容歌单列表
 class PlaylistPage extends StatefulWidget {
   const PlaylistPage({super.key});
 

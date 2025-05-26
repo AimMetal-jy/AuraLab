@@ -27,11 +27,11 @@ class DrawerMenu extends StatelessWidget {
           const SizedBox(height: 32),
           // 四个按钮
           MenuButton(
-            text: '听力',
+            text: '文档',
             onPressed: () {
               Navigator.pushReplacementNamed(
                 context,
-                AppRoutes.listening,
+                AppRoutes.documents,
               );
             },
           ),

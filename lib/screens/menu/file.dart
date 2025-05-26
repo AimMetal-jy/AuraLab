@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auralab/util/widgets/custom_card.dart';
 /// 文件页面组件
-/// 展示听力文件列表
+/// 展示文档文件列表
 class FilePage extends StatefulWidget {
   const FilePage({super.key});
 

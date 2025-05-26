@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:auralab/screens/listening/listening.dart';
+import 'package:auralab/screens/documents/documents.dart';
 // import 'package:auralab/screens/menu/menu.dart'; // 菜单页面暂未启用
 import 'package:auralab/screens/notes/notes.dart';
 import 'package:auralab/screens/settings/settings.dart';
@@ -14,7 +14,7 @@ import 'package:auralab/screens/vocabulary/vocabulary.dart';
 class AppRoutes {
   /// 路由名称常量
   /// 定义应用中各页面的路由路径
-  static const String listening = '/listening'; // 听力练习页面路由
+  static const String documents = '/documents'; // 文档练习页面路由
   static const String notes = '/notes';         // 笔记页面路由
   static const String translate = '/translate'; // 翻译页面路由
   static const String vocabulary = '/vocabulary'; // 词汇学习页面路由
@@ -22,13 +22,13 @@ class AppRoutes {
   
   /// 应用初始路由
   /// 定义应用启动时显示的第一个页面
-  static const String initialRoute = listening;
+  static const String initialRoute = documents;
   
   /// 应用路由表
   /// 将路由名称映射到对应的页面构建器函数
   /// 当导航到命名路由时，Flutter会使用这个映射表查找对应的页面构建器
   static Map<String, WidgetBuilder> routes = {
-    listening: (context) => const ListeningPage(),
+    documents: (context) => const DocumentsPage(),
     notes: (context) => const Notes(),
     translate: (context) => const TranslatePage(),
     vocabulary: (context) => const VocabularyPage(),
@@ -40,11 +40,11 @@ class AppRoutes {
   /// 
   /// [settings] 包含有关请求的路由的信息
   /// 
-  /// 返回一个回退路由，将用户导航到听力练习页面
+  /// 返回一个回退路由，将用户导航到文档练习页面
   static Route<dynamic> onUnknownRoute(RouteSettings settings) {
-    // 对于未知路由，默认导航到听力练习页面
+    // 对于未知路由，默认导航到文档练习页面
     return MaterialPageRoute(
-      builder: (context) => const ListeningPage(),
+      builder: (context) => const DocumentsPage(),
     );
   }
 }

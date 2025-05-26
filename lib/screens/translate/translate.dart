@@ -56,11 +56,11 @@ class EnglishToChinesePage extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => TranslateDisplayPage(),
+              builder: (context) => const TranslateDisplayPage(),
             ),
           );
         },
-        child: Text('进入翻译展示页'),
+        child: const Text('进入翻译展示页'),
       ),
     );
   }
@@ -83,11 +83,11 @@ class ChineseToEnglishPage extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => TranslateDisplayPage(),
+              builder: (context) => const TranslateDisplayPage(),
             ),
           );
         },
-        child: Text('进入翻译展示页'),
+        child: const Text('进入翻译展示页'),
       ),
     );
   }

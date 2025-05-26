@@ -3,7 +3,7 @@ import 'package:auralab/util/widgets/custom_card.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class TranslateDisplayPage extends StatefulWidget {
-  const TranslateDisplayPage({Key? key}) : super(key: key);
+  const TranslateDisplayPage({super.key});
 
   @override
   State<TranslateDisplayPage> createState() => _TranslateDisplayPageState();
@@ -83,7 +83,7 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
+        title: const TextField(
           decoration: InputDecoration(
             hintText: '在本文中搜索',
             border: InputBorder.none,
@@ -92,20 +92,20 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
         ),
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ),
       body: ListView.builder(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         // 增加 itemCount 以包含标题
         itemCount: cardInstances.length + 1,
         itemBuilder: (context, index) {
           // 如果是第一个项目，返回标题
           if (index == 0) {
-            return Padding(
+            return const Padding(
               padding: EdgeInsets.only(bottom: 16),
               child: Text(
                 '模拟标题 - 翻译内容列表',  // 这里可以替换为从参数传入的标题
@@ -175,7 +175,7 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
       parts.add(
         ListTile(
           title: Text('卡片 ${card.id}'),
-          subtitle: Text('长按查看选项'),
+          subtitle: const Text('长按查看选项'),
         ),
       );
     }
@@ -234,7 +234,7 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
     return Transform.translate(
       offset: Offset(0, translateY),
       child: CustomCard(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         color: cardColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,8 +242,8 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
             // 顶部功能区
             Row(
               children: [
-                Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-                Spacer(),
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                const Spacer(),
                 // 代码模式切换按钮
                 IconButton(
                   icon: Icon(card.codeMode ? Icons.visibility : Icons.code),
@@ -257,34 +257,34 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
                 // 只在总结部分显示额外的操作按钮
                 if (showActions) ...[  
                   IconButton(
-                    icon: Icon(Icons.sync),
+                    icon: const Icon(Icons.sync),
                     tooltip: '同步至批注',
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('同步至批注功能暂未实现')),
+                        const SnackBar(content: Text('同步至批注功能暂未实现')),
                       );
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: const Icon(Icons.add),
                     tooltip: '添加自定义功能',
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('添加自定义功能暂未实现')),
+                        const SnackBar(content: Text('添加自定义功能暂未实现')),
                       );
                     },
                   ),
                 ],
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             // 内容区域
             card.codeMode
                 ? TextFormField(
                     controller: controller,
                     maxLines: null,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       labelText: '编辑$title',
                     ),
                     onChanged: (val) {
@@ -325,11 +325,11 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ListTile(
+                  const ListTile(
                     title: Text('显示选项', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   CheckboxListTile(
-                    title: Text('显示总结'),
+                    title: const Text('显示总结'),
                     value: card.showSummary,
                     onChanged: (value) {
                       setState(() {
@@ -339,7 +339,7 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('显示原文'),
+                    title: const Text('显示原文'),
                     value: card.showOriginal,
                     onChanged: (value) {
                       setState(() {
@@ -349,7 +349,7 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('显示译文'),
+                    title: const Text('显示译文'),
                     value: card.showTranslation,
                     onChanged: (value) {
                       setState(() {
@@ -359,7 +359,7 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('显示我的翻译'),
+                    title: const Text('显示我的翻译'),
                     value: card.showUserTranslation,
                     onChanged: (value) {
                       setState(() {
@@ -368,37 +368,37 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> {
                       this.setState(() {});
                     },
                   ),
-                  Divider(),
-                  ListTile(
+                  const Divider(),
+                  const ListTile(
                     title: Text('其他选项', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   ListTile(
-                    leading: Icon(Icons.category),
-                    title: Text('添加到自定义分类'),
+                    leading: const Icon(Icons.category),
+                    title: const Text('添加到自定义分类'),
                     onTap: () {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('添加到自定义分类功能暂未实现')),
+                        const SnackBar(content: Text('添加到自定义分类功能暂未实现')),
                       );
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.volume_off),
-                    title: Text('不朗读该卡片'),
+                    leading: const Icon(Icons.volume_off),
+                    title: const Text('不朗读该卡片'),
                     onTap: () {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('不朗读该卡片功能暂未实现')),
+                        const SnackBar(content: Text('不朗读该卡片功能暂未实现')),
                       );
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.volume_up),
-                    title: Text('朗读该卡片'),
+                    leading: const Icon(Icons.volume_up),
+                    title: const Text('朗读该卡片'),
                     onTap: () {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('朗读该卡片功能暂未实现')),
+                        const SnackBar(content: Text('朗读该卡片功能暂未实现')),
                       );
                     },
                   ),

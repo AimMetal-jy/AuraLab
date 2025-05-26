@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auralab/util/buttons/drawer_gesture_detector.dart';
-import 'package:auralab/screens/menu/menu.dart';
+import 'package:auralab/screens/drawer/drawer.dart';
 
 /// 通用标签页脚手架
 /// 在应用中多处复用的页面结构组件
