@@ -13,6 +13,7 @@ class NoteDisplayPage extends StatefulWidget {
 class _NoteDisplayPageState extends State<NoteDisplayPage> {
   bool _isCodeMode = false;
   String _searchQuery = '';
+  late FocusNode _searchFocusNode;
   final List<Map<String, String>> _notes = [
     {
       'content': '# 标题1\n这是第一条批注的正文内容',
@@ -65,6 +66,18 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _searchFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -75,11 +88,12 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: TextField(
+            focusNode: _searchFocusNode,
             decoration: const InputDecoration(
               hintText: '搜索批注...',
               prefixIcon: Icon(Icons.search, size: 20),
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+              contentPadding: EdgeInsets.symmetric(vertical: 10.0),
             ),
             onChanged: (value) {
               setState(() {
@@ -89,6 +103,13 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
           ),
         ),
         actions: [
+          // IconButton(
+          //   icon: const Icon(Icons.keyboard),
+          //   onPressed: () {
+          //     _searchFocusNode.requestFocus();
+          //   },
+          //   tooltip: '聚焦搜索框',
+          // ),
           IconButton(
             icon: Icon(_isCodeMode ? Icons.visibility : Icons.code),
             onPressed: () {
@@ -100,25 +121,31 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: _filteredNotes.length + 1, // +1 for title
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Text(
-                widget.title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            );
-          }
-          final note = _filteredNotes[index - 1];
-          return _buildNoteCard(note, index - 1);
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusScope.of(context).unfocus();
         },
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: _filteredNotes.length + 1, // +1 for title
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  widget.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            }
+            final note = _filteredNotes[index - 1];
+            return _buildNoteCard(note, index - 1);
+          },
+        ),
       ),
     );
   }
@@ -128,6 +155,9 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
       margin: const EdgeInsets.only(bottom: 12.0),
       elevation: 2.0,
       child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: const Color.fromARGB(255, 196, 196, 196),
+        borderRadius: BorderRadius.circular(12.0),
         onLongPress: () => _showCardOptions(index),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -208,6 +238,9 @@ class _NoteDisplayPageState extends State<NoteDisplayPage> {
           ),
         );
       },
-    );
+    ).then((_) {
+      // 弹窗关闭后强制失焦，防止搜索框自动聚焦
+      FocusScope.of(context).unfocus();
+    });
   }
 }
