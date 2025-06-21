@@ -5,6 +5,7 @@ import 'package:auralab/screens/settings/settings.dart';
 import 'package:auralab/screens/translate/translate.dart';
 import 'package:auralab/screens/vocabulary/vocabulary.dart';
 import 'package:auralab/screens/search/search_page.dart';
+import 'package:auralab/screens/user/user.dart';
 
 /// 应用路由管理类
 /// 定义所有页面的路由常量和路由生成器
@@ -20,6 +21,7 @@ class AppRoutes {
   static const String vocabulary = '/vocabulary'; // 词汇学习页面路由
   static const String settings = '/settings';   // 设置页面路由
   static const String search = '/search';       // 搜索页面路由
+  static const String user = '/user';           // 用户管理页面路由
   /// 应用初始路由
   /// 定义应用启动时显示的第一个页面
   static const String initialRoute = documents;
@@ -34,6 +36,7 @@ class AppRoutes {
     vocabulary: (context) => const VocabularyPage(),
     settings: (context) => const Settings(),
     search: (context) => const SearchPage(),
+    user: (context) => const UserPage(),
   };
   
   /// 未知路由处理器

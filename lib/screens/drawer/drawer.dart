@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auralab/routes/app_routes.dart';
 import '../../util/buttons/menu_button.dart';
+import '../../services/user_service.dart';
 
 class DrawerMenu extends StatelessWidget {
   final String userName;
@@ -15,14 +16,38 @@ class DrawerMenu extends StatelessWidget {
         children: [
           const SizedBox(height: 24),
           // 头像
-          const CircleAvatar(
-            radius: 32,
-            backgroundColor: Colors.grey,
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.user,
+              );
+            },
+            child: const CircleAvatar(
+              radius: 32,
+              backgroundColor: Colors.grey,
+              child: Icon(
+                Icons.person,
+                size: 32,
+                color: Colors.white,
+              ),
+            ),
           ),
           const SizedBox(height: 8),
-          Text(
-            userName,
-            style: const TextStyle(fontSize: 14, color: Colors.black87),
+          ListenableBuilder(
+            listenable: UserService(),
+            builder: (context, child) {
+              final userService = UserService();
+              return Text(
+                userService.isLoggedIn 
+                    ? userService.username ?? '未知用户'
+                    : '点击登录',
+                style: TextStyle(
+                  fontSize: 14, 
+                  color: userService.isLoggedIn ? Colors.black87 : Colors.grey[600],
+                ),
+              );
+            },
           ),
           const SizedBox(height: 32),
           // 四个按钮
@@ -132,6 +157,63 @@ class DrawerMenu extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          
+          // 登出按钮（仅在已登录时显示）
+          ListenableBuilder(
+            listenable: UserService(),
+            builder: (context, child) {
+              final userService = UserService();
+              if (!userService.isLoggedIn) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: const EdgeInsets.only(left: 32, bottom: 8),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: TextButton.icon(
+                    onPressed: () {
+                      // 显示确认对话框
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('确认登出'),
+                            content: const Text('您确定要退出登录吗？'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('取消'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  UserService().clearUser();
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('已退出登录'),
+                                      backgroundColor: Colors.orange,
+                                    ),
+                                  );
+                                },
+                                child: const Text('确认'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.logout, color: Colors.red),
+                    label: const Text(
+                      '退出登录',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
           
           // 设置按钮
