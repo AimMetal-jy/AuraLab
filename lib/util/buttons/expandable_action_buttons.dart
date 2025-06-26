@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 /// 包含一个主按钮和三个子按钮，长按主按钮可以展开/收起子按钮
 /// 用于提供多个操作选项，节省界面空间
 class ExpandableActionButtons extends StatefulWidget {
-  const ExpandableActionButtons({super.key});
+  final Function(String title, String content)? onAddText;
+  
+  const ExpandableActionButtons({super.key, this.onAddText});
 
   @override
   State<ExpandableActionButtons> createState() =>
@@ -45,6 +47,79 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
         _animationController.reverse(); // 播放收起动画
       }
     });
+  }
+
+  // 显示添加文本对话框
+  void _showAddTextDialog() {
+    final titleController = TextEditingController();
+    final contentController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('添加文本'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                    labelText: '标题',
+                    hintText: '请输入文件标题',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: contentController,
+                  decoration: const InputDecoration(
+                    labelText: '内容',
+                    hintText: '请输入文件内容',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 5,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('取消'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final title = titleController.text.trim();
+                final content = contentController.text.trim();
+                
+                if (title.isEmpty || content.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('标题和内容不能为空')),
+                  );
+                  return;
+                }
+                
+                // 调用回调函数
+                if (widget.onAddText != null) {
+                  widget.onAddText!(title, content);
+                }
+                
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('文件添加成功')),
+                );
+              },
+              child: const Text('保存'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -87,26 +162,32 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
           bottom: _isExpanded ? 150 : 50, // 展开时向上方移动
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut, // 使用缓出曲线使动画更自然
-          child: ElevatedButton(
-            onPressed: _isExpanded
-                ? () {
-                    // 文本按钮点击逻辑
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(const SnackBar(content: Text('添加文本')));
-                    _toggleExpand(); // 点击后收起菜单
-                  }
-                : null,
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(), // 圆形按钮
-              padding: const EdgeInsets.all(16),
-              backgroundColor: _isExpanded ? Colors.blue : Colors.transparent,
-              foregroundColor: Colors.white,
-              elevation: _isExpanded ? 6 : 0,
-            ),
-            child: AnimatedOpacity(
-              opacity: _isExpanded ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 300),
-              child: const Icon(Icons.text_fields),
+          child: GestureDetector(
+            onLongPress: _isExpanded ? () {
+              // 长按文本按钮弹出添加文本对话框
+              _showAddTextDialog();
+              _toggleExpand(); // 收起菜单
+            } : null,
+            child: ElevatedButton(
+              onPressed: _isExpanded
+                  ? () {
+                      // 直接调用添加文本对话框
+                      _showAddTextDialog();
+                      _toggleExpand(); // 点击后收起菜单
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(), // 圆形按钮
+                padding: const EdgeInsets.all(16),
+                backgroundColor: _isExpanded ? Colors.blue : Colors.transparent,
+                foregroundColor: Colors.white,
+                elevation: _isExpanded ? 6 : 0,
+              ),
+              child: AnimatedOpacity(
+                opacity: _isExpanded ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 300),
+                child: const Icon(Icons.text_fields),
+              ),
             ),
           ),
         ),
