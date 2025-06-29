@@ -90,17 +90,19 @@ class _SettingsState extends State<Settings> {
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         children: [
           // 大模型设置区域 - 点击后可以选择默认使用的AI大模型
-          const _SettingSection(
+          _SettingSection(
             title: '默认使用的大模型',
             trailing: Icon(Icons.arrow_forward_ios, size: 16), // 右侧箭头图标，表示可以点击进入下一级页面
+            onTap: () {},
           ),
 
           const SizedBox(height: 8),
 
           // 主题设置区域 - 点击后可以选择应用的主题和背景
-          const _SettingSection(
+          _SettingSection(
             title: '主题: 默认背景',
             trailing: Icon(Icons.arrow_forward_ios, size: 16), // 右侧箭头图标，表示可以点击进入下一级页面
+            onTap: () {},
           ),
 
           const SizedBox(height: 16),
@@ -113,15 +115,17 @@ class _SettingsState extends State<Settings> {
           ),
 
           // 配置备份设置项 - 点击后可以进行应用配置的备份和恢复
-          const _SettingSection(
+          _SettingSection(
             title: '配置备份',
             trailing: Icon(Icons.arrow_forward_ios, size: 16), // 右侧箭头图标，表示可以点击进入下一级页面
+            onTap: () {},
           ),
 
           // 语言设置项 - 点击后可以设置应用的全局目标语言和当前语言
-          const _SettingSection(
+          _SettingSection(
             title: '设置全局目标语言和当前语言',
             trailing: Icon(Icons.arrow_forward_ios, size: 16), // 右侧箭头图标，表示可以点击进入下一级页面
+            onTap: () {},
           ),
 
           // 默认收起翻译设置项 - 控制是否默认收起翻译内容
@@ -152,9 +156,10 @@ class _SettingsState extends State<Settings> {
           ),
 
           // 双击页面功能设置项 - 点击后可以设置双击页面的行为
-          const _SettingSection(
+          _SettingSection(
             title: '双击页面: 暂停; 选词',
             trailing: Icon(Icons.arrow_forward_ios, size: 16), // 右侧箭头图标，表示可以点击进入下一级页面
+            onTap: () {},
           ),
 
           // 自动收起播放按钮设置项 - 控制是否自动隐藏播放控制按钮
@@ -171,9 +176,10 @@ class _SettingsState extends State<Settings> {
           ),
 
           // AI切片默认存储位置设置项 - 点击后可以设置AI生成内容的存储位置
-          const _SettingSection(
+          _SettingSection(
             title: 'AI切片默认存储位置: 新建同名文件夹; 直接存在当前目录下',
             trailing: Icon(Icons.arrow_forward_ios, size: 16), // 右侧箭头图标，表示可以点击进入下一级页面
+            onTap: () {},
           ),
         ],
       ),

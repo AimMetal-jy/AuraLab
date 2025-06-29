@@ -93,71 +93,71 @@ class DrawerMenu extends StatelessWidget {
           const Expanded(child: SizedBox()),
           
           // 播放器区域
-          Container(
-            margin: const EdgeInsets.only(left: 50,right: 50,bottom: 70),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.grey[350],
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // 播放列表区域
-                Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[400],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: ListView.builder(
-                    itemCount: 4,
-                    padding: const EdgeInsets.all(8),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 40,
-                        margin: const EdgeInsets.only(bottom: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[350],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+          // Container(
+          //   margin: const EdgeInsets.only(left: 50,right: 50,bottom: 70),
+          //   padding: const EdgeInsets.all(12),
+          //   decoration: BoxDecoration(
+          //     color: Colors.grey[350],
+          //     borderRadius: BorderRadius.circular(16),
+          //   ),
+          //   child: Column(
+          //     mainAxisSize: MainAxisSize.min,
+          //     children: [
+          //       // 播放列表区域
+          //       Container(
+          //         height: 200,
+          //         decoration: BoxDecoration(
+          //           color: Colors.grey[400],
+          //           borderRadius: BorderRadius.circular(8),
+          //         ),
+          //         child: ListView.builder(
+          //           itemCount: 4,
+          //           padding: const EdgeInsets.all(8),
+          //           itemBuilder: (context, index) {
+          //             return Container(
+          //               height: 40,
+          //               margin: const EdgeInsets.only(bottom: 8),
+          //               decoration: BoxDecoration(
+          //                 color: Colors.grey[350],
+          //                 borderRadius: BorderRadius.circular(8),
+          //               ),
+          //             );
+          //           },
+          //         ),
+          //       ),
                 
-                const SizedBox(height: 12),
+          //       const SizedBox(height: 12),
                 
-                // 播放控制按钮
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.skip_previous),
-                      onPressed: () {},
-                      color: Colors.black87,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[400],
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.play_arrow),
-                        onPressed: () {},
-                        color: Colors.black87,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.skip_next),
-                      onPressed: () {},
-                      color: Colors.black87,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          //       // 播放控制按钮
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           IconButton(
+          //             icon: const Icon(Icons.skip_previous),
+          //             onPressed: () {},
+          //             color: Colors.black87,
+          //           ),
+          //           Container(
+          //             decoration: BoxDecoration(
+          //               color: Colors.grey[400],
+          //               shape: BoxShape.circle,
+          //             ),
+          //             child: IconButton(
+          //               icon: const Icon(Icons.play_arrow),
+          //               onPressed: () {},
+          //               color: Colors.black87,
+          //             ),
+          //           ),
+          //           IconButton(
+          //             icon: const Icon(Icons.skip_next),
+          //             onPressed: () {},
+          //             color: Colors.black87,
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
           
           // 登出按钮（仅在已登录时显示）
           ListenableBuilder(

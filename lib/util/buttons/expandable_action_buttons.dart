@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../screens/audio/audio_selection_page.dart';
 
 /// 可展开按钮组件
 /// 包含一个主按钮和三个子按钮，长按主按钮可以展开/收起子按钮
@@ -201,9 +202,12 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
           child: ElevatedButton(
             onPressed: _isExpanded
                 ? () {
-                    // 音频按钮点击逻辑
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(const SnackBar(content: Text('添加音频')));
+                    // 导航到音频选择页面
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AudioSelectionPage(),
+                      ),
+                    );
                     _toggleExpand(); // 点击后收起菜单
                   }
                 : null,
@@ -242,7 +246,7 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withAlpha(51),
                     spreadRadius: 1,
                     blurRadius: 3,
                     offset: const Offset(0, 2),
