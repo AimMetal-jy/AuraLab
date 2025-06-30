@@ -415,7 +415,7 @@ class _AudioSelectionPageState extends State<AudioSelectionPage>
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
                     '与AI对话，生成您需要的文本内容',
@@ -1494,15 +1494,21 @@ class _AudioPreviewDialogState extends State<AudioPreviewDialog> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                widget.text,
-                style: const TextStyle(fontSize: 14),
+            Flexible(
+              child: Container(
+                width: double.infinity, // 让Container宽度占满
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: SingleChildScrollView(
+                  child: Text(
+                    widget.text,
+                    style: const TextStyle(fontSize: 14),
+                    textAlign: TextAlign.center, // 文本居中
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 16),
