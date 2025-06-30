@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart'; // Flutter材料设计组件库
+import 'package:flutter/material.dart';
+// Flutter材料设计组件库
 
 /// 设置页面主组件
 /// 
@@ -127,6 +128,7 @@ class _SettingsState extends State<Settings> {
             trailing: Icon(Icons.arrow_forward_ios, size: 16), // 右侧箭头图标，表示可以点击进入下一级页面
             onTap: () {},
           ),
+
 
           // 默认收起翻译设置项 - 控制是否默认收起翻译内容
           _SettingSection(
