@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import '../../screens/audio/audio_selection_page.dart';
 
 /// 可展开按钮组件
-/// 包含一个主按钮和三个子按钮，长按主按钮可以展开/收起子按钮
+/// 包含一个主按钮和三个子按钮，点击主按钮可以展开/收起子按钮
 /// 用于提供多个操作选项，节省界面空间
 class ExpandableActionButtons extends StatefulWidget {
   final Function(String title, String content)? onAddText;
@@ -125,12 +125,15 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
+    return SizedBox(
+      width: 300, // 给Stack一个明确的宽度约束
+      height: 300, // 给Stack一个明确的高度约束
+      child: Stack(
+        children: [
         // 图片按钮 - 使用AnimatedPositioned实现动画效果
         AnimatedPositioned(
-          right: _isExpanded ? 100 : 30, // 展开时向左上方移动
-          bottom: _isExpanded ? 120 : 50, // 展开时向左上方移动
+          right: _isExpanded ? 0 : 0, // 展开时保持右侧位置
+          bottom: _isExpanded ? 230 : 0, // 展开时向上移动更多距离
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut, // 使用缓出曲线使动画更自然
           child: ElevatedButton(
@@ -159,8 +162,8 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
 
         // 文本按钮
         AnimatedPositioned(
-          right: _isExpanded ? 30 : 30, // 展开时向上方移动
-          bottom: _isExpanded ? 150 : 50, // 展开时向上方移动
+          right: _isExpanded ? 0 : 0, // 展开时保持右侧位置
+          bottom: _isExpanded ? 166 : 0, // 展开时向上移动适中距离
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut, // 使用缓出曲线使动画更自然
           child: GestureDetector(
@@ -195,8 +198,8 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
 
         // 音频按钮
         AnimatedPositioned(
-          right: _isExpanded ? 135 : 30, // 展开时向右上方移动
-          bottom: _isExpanded ? 55 : 50, // 展开时向右上方移动
+          right: _isExpanded ? 0 : 0, // 展开时保持右侧位置
+          bottom: _isExpanded ? 100 : 0, // 展开时向上移动较小距离
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
           child: ElevatedButton(
@@ -226,18 +229,17 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
           ),
         ),
 
-        // 主加号按钮 - 使用Positioned固定在右下角
+        // 主加号按钮 - 使用Positioned绝对定位
         Positioned(
-          right: 30,
-          bottom: 50,
+          right: 0,
+          bottom: 0, // 相对于Stack容器底部
           child: GestureDetector(
-            onLongPress: () {
+            onTap: () {
               // 触发震动反馈
               HapticFeedback.mediumImpact();
               // 切换展开状态
               _toggleExpand();
-            }, // 使用长按触发震动和展开状态切换
-            onTap: _isExpanded ? _toggleExpand : null, // 如果已展开，点击可以收起
+            }, // 使用点击触发震动和展开状态切换
             child: Container(
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
@@ -261,7 +263,8 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
             ),
           ),
         ),
-      ],
+        ],
+      ),
     );
   }
 }
