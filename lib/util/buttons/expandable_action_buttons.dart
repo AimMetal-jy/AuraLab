@@ -6,9 +6,10 @@ import '../../screens/audio/audio_selection_page.dart';
 /// 包含一个主按钮和三个子按钮，长按主按钮可以展开/收起子按钮
 /// 用于提供多个操作选项，节省界面空间
 class ExpandableActionButtons extends StatefulWidget {
-  final Function(String title, String content)? onAddText;
+  final Function(String title)? onAddText;
+  final Function(String title)? onAddFile; // 新增文件回调
   
-  const ExpandableActionButtons({super.key, this.onAddText});
+  const ExpandableActionButtons({super.key, this.onAddText, this.onAddFile});
 
   @override
   State<ExpandableActionButtons> createState() =>
@@ -29,6 +30,62 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300), // 动画持续时间
       vsync: this,
+    );
+  }
+
+  // 显示添加文件对话框
+  void _showAddFileDialog() {
+    final titleController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('新增翻译文件'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                labelText: '文件标题',
+                hintText: '请输入翻译文件标题',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('取消'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final title = titleController.text.trim();
+                
+                if (title.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('标题不能为空')),
+                  );
+                  return;
+                }
+                
+                // 调用新增文件回调函数
+                if (widget.onAddFile != null) {
+                  widget.onAddFile!(title);
+                }
+                
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('翻译文件创建成功')),
+                );
+              },
+              child: const Text('创建'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -53,7 +110,6 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
   // 显示添加文本对话框
   void _showAddTextDialog() {
     final titleController = TextEditingController();
-    final contentController = TextEditingController();
 
     showDialog(
       context: context,
@@ -62,28 +118,13 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
           title: const Text('添加文本'),
           content: SizedBox(
             width: double.maxFinite,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                    labelText: '标题',
-                    hintText: '请输入文件标题',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: contentController,
-                  decoration: const InputDecoration(
-                    labelText: '内容',
-                    hintText: '请输入文件内容',
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLines: 5,
-                ),
-              ],
+            child: TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                labelText: '标题',
+                hintText: '请输入文件标题',
+                border: OutlineInputBorder(),
+              ),
             ),
           ),
           actions: [
@@ -96,18 +137,17 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
             ElevatedButton(
               onPressed: () {
                 final title = titleController.text.trim();
-                final content = contentController.text.trim();
                 
-                if (title.isEmpty || content.isEmpty) {
+                if (title.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('标题和内容不能为空')),
+                    const SnackBar(content: Text('标题不能为空')),
                   );
                   return;
                 }
                 
                 // 调用回调函数
                 if (widget.onAddText != null) {
-                  widget.onAddText!(title, content);
+                  widget.onAddText!(title);
                 }
                 
                 Navigator.of(context).pop();
@@ -234,9 +274,16 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
             onLongPress: () {
               // 触发震动反馈
               HapticFeedback.mediumImpact();
-              // 切换展开状态
-              _toggleExpand();
-            }, // 使用长按触发震动和展开状态切换
+              
+              if (_isExpanded) {
+                // 如果已展开，长按弹出新增文件对话框
+                _showAddFileDialog();
+                _toggleExpand(); // 收起菜单
+              } else {
+                // 如果未展开，长按展开菜单
+                _toggleExpand();
+              }
+            }, // 使用长按触发震动和展开状态切换或新增文件
             onTap: _isExpanded ? _toggleExpand : null, // 如果已展开，点击可以收起
             child: Container(
               padding: const EdgeInsets.all(22),
