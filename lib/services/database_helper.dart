@@ -162,7 +162,7 @@ class DatabaseHelper {
         'is_active': user.isActive ? 1 : 0,
       },
       where: 'id = ?',
-      whereArgs: [user.id!],
+      whereArgs: [user.id],
     );
   }
 

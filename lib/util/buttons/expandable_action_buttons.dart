@@ -34,60 +34,6 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
   }
 
   // 显示添加文件对话框
-  void _showAddFileDialog() {
-    final titleController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('新增翻译文件'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: TextField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                labelText: '文件标题',
-                hintText: '请输入翻译文件标题',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('取消'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final title = titleController.text.trim();
-                
-                if (title.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('标题不能为空')),
-                  );
-                  return;
-                }
-                
-                // 调用新增文件回调函数
-                if (widget.onAddFile != null) {
-                  widget.onAddFile!(title);
-                }
-                
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('翻译文件创建成功')),
-                );
-              },
-              child: const Text('创建'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   void dispose() {
