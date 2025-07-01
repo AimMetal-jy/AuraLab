@@ -41,8 +41,9 @@ class CardInstance {
     required this.userTranslation,
     this.showSummary = true,
     this.showOriginal = true,
+
     this.showTranslation = true,
-    this.showUserTranslation = false,
+    this.showUserTranslation = true,
     this.codeMode = false,
   });
 
@@ -57,7 +58,7 @@ class CardInstance {
       showSummary: map['showSummary'] ?? true,
       showOriginal: map['showOriginal'] ?? true,
       showTranslation: map['showTranslation'] ?? true,
-      showUserTranslation: map['showUserTranslation'] ?? false,
+      showUserTranslation: map['showUserTranslation'] ?? true,
       codeMode: map['codeMode'] ?? false,
     );
   }
@@ -1090,7 +1091,7 @@ class _TranslateDisplayPageState extends State<TranslateDisplayPage> with Widget
                     value: card.showUserTranslation,
                     onChanged: (value) {
                       setState(() {
-                        card.showUserTranslation = value ?? false;
+                        card.showUserTranslation = value ?? true;
                       });
                       this.setState(() {});
                       // 保存到数据库
