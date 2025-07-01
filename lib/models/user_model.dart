@@ -1,12 +1,12 @@
 class User {
-  final int? id;
+  final int id;
   final String username;
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool isActive;
 
   User({
-    this.id,
+    required this.id,
     required this.username,
     required this.createdAt,
     required this.updatedAt,
