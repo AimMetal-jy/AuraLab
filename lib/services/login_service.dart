@@ -1,12 +1,13 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/user_model.dart';
-import 'database_helper.dart';
+import 'user_service.dart';
 
 class ApiService {
   // 后端服务器地址
   static const String baseUrl = 'http://localhost:8000/api';
-  static final DatabaseHelper _databaseHelper = DatabaseHelper();
+  static final UserService _userService = UserService();
   
   // 注册用户
   static Future<Map<String, dynamic>> register(String username, String password) async {
@@ -29,9 +30,9 @@ class ApiService {
         if (responseData['user'] != null) {
           try {
             final user = User.fromJson(responseData['user']);
-            await _databaseHelper.insertUser(user);
+            _userService.setUser(user);
           } catch (e) {
-            print('保存用户信息到本地数据库失败: $e');
+            print('保存用户信息失败: $e');
           }
         }
         return {
@@ -81,14 +82,9 @@ class ApiService {
         if (responseData['user'] != null) {
           try {
             final user = User.fromJson(responseData['user']);
-            final existingUser = await _databaseHelper.getUserById(user.id!);
-            if (existingUser != null) {
-                await _databaseHelper.updateUser(user);
-            } else {
-              await _databaseHelper.insertUser(user);
-            }
+            _userService.setUser(user);
           } catch (e) {
-            print('保存用户信息到本地数据库失败: $e');
+            print('保存用户信息失败: $e');
           }
         }
         return {
@@ -141,35 +137,20 @@ class ApiService {
 
   // 本地用户管理方法
   
-  // 获取本地用户信息
-  static Future<User?> getLocalUser(int userId) async {
-    try {
-      return await _databaseHelper.getUserById(userId);
-    } catch (e) {
-      print('获取本地用户信息失败: $e');
-      return null;
-    }
+  // 获取当前登录用户信息
+  static User? getCurrentUser() {
+    return _userService.currentUser;
   }
 
-  // 根据用户名获取本地用户信息
-  static Future<User?> getLocalUserByUsername(String username) async {
-    try {
-      return await _databaseHelper.getUserByUsername(username);
-    } catch (e) {
-      print('根据用户名获取本地用户信息失败: $e');
-      return null;
-    }
+  // 根据用户名检查是否为当前用户
+  static bool isCurrentUser(String username) {
+    final currentUser = _userService.currentUser;
+    return currentUser != null && currentUser.username == username;
   }
 
-  // 检查用户是否存在于本地数据库
-  static Future<bool> isUserExistsLocally(String username) async {
-    try {
-      final user = await _databaseHelper.getUserByUsername(username);
-      return user != null;
-    } catch (e) {
-      print('检查本地用户存在性失败: $e');
-      return false;
-    }
+  // 检查用户是否已登录
+  static bool isUserLoggedIn() {
+    return _userService.isLoggedIn;
   }
 
   // 离线模式检查（检查网络连接）
@@ -177,13 +158,13 @@ class ApiService {
     return await checkHealth();
   }
 
-  // 清除本地用户数据
-  static Future<bool> clearLocalUserData() async {
+  // 清除用户登录状态
+  static bool clearUserData() {
     try {
-      await _databaseHelper.clearAllData();
+      _userService.clearUser();
       return true;
     } catch (e) {
-      print('清除本地用户数据失败: $e');
+      print('清除用户数据失败: $e');
       return false;
     }
   }

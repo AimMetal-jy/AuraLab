@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auralab/util/widgets/tab/tabpage_scaffold.dart'; // 带标签页的脚手架组件
 import 'package:auralab/util/buttons/expandable_action_buttons.dart'; // 可展开的操作按钮组件
 import 'package:auralab/screens/translate/translate_display_page.dart';
+import 'package:auralab/services/database_service.dart';
 
 // 文件数据模型
 class TranslateFile {
@@ -25,17 +26,66 @@ class FileManager extends ChangeNotifier {
   FileManager._internal();
   
   final List<TranslateFile> _files = [];
+  final DatabaseService _databaseService = DatabaseService();
+  bool _isInitialized = false;
   
   List<TranslateFile> get files => List.unmodifiable(_files);
   
-  void addFile(TranslateFile file) {
-    _files.add(file);
-    notifyListeners();
+  /// 初始化文件管理器，从数据库加载数据
+  Future<void> initialize() async {
+    if (_isInitialized) return;
+    
+    try {
+      final filesFromDb = await _databaseService.getTranslateFiles();
+      _files.clear();
+      _files.addAll(filesFromDb);
+      _isInitialized = true;
+      notifyListeners();
+    } catch (e) {
+      print('初始化文件管理器失败: $e');
+    }
   }
   
-  void removeFile(String id) {
-    _files.removeWhere((file) => file.id == id);
-    notifyListeners();
+  /// 添加文件并保存到数据库
+  Future<void> addFile(TranslateFile file) async {
+    try {
+      await _databaseService.saveTranslateFile(file);
+      _files.add(file);
+      notifyListeners();
+    } catch (e) {
+      print('保存文件失败: $e');
+      rethrow;
+    }
+  }
+  
+  /// 删除文件并从数据库移除
+  Future<void> removeFile(String id) async {
+    try {
+      // 先删除文件相关的所有卡片
+      await _databaseService.deleteCardInstancesByFileId(id);
+      // 再删除文件本身
+      await _databaseService.deleteTranslateFile(id);
+      _files.removeWhere((file) => file.id == id);
+      notifyListeners();
+    } catch (e) {
+      print('删除文件失败: $e');
+      rethrow;
+    }
+  }
+  
+  /// 更新文件并保存到数据库
+  Future<void> updateFile(TranslateFile file) async {
+    try {
+      await _databaseService.updateTranslateFile(file);
+      final index = _files.indexWhere((f) => f.id == file.id);
+      if (index != -1) {
+        _files[index] = file;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('更新文件失败: $e');
+      rethrow;
+    }
   }
   
   // 静态方法保持向后兼容
@@ -72,15 +122,65 @@ class TranslatePage extends StatelessWidget {
       userName: '大富翁',
       // 可展开的浮动操作按钮，传入添加文件的回调
       floatingActionButton: ExpandableActionButtons(
-        onAddText: (title, content) {
+        onAddText: (title) async {
           // 创建新文件
           final newFile = TranslateFile(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
             title: title,
-            content: content,
+            content: '', // 内容设为空字符串
             createdAt: DateTime.now(),
           );
-          FileManager.instance.addFile(newFile);
+          try {
+            await FileManager.instance.addFile(newFile);
+          } catch (e) {
+            // 可以在这里添加错误处理，比如显示SnackBar
+            print('添加文件失败: $e');
+          }
+        },
+        onAddFile: (title) async {
+          // 先初始化FileManager以确保从数据库加载了现有文件
+          await FileManager.instance.initialize();
+          
+          // 检查是否已有同名文件存在
+          TranslateFile? existingFile;
+          try {
+            existingFile = FileManager.instance.files
+                .firstWhere((file) => file.title == title);
+          } catch (e) {
+            // 没有找到同名文件，existingFile保持为null
+          }
+          
+          TranslateFile targetFile;
+          if (existingFile != null) {
+            // 如果已有同名文件，重用它
+            targetFile = existingFile;
+            print('重用现有文件: ${targetFile.id}');
+          } else {
+            // 创建新翻译文件
+            targetFile = TranslateFile(
+              id: DateTime.now().millisecondsSinceEpoch.toString(),
+              title: title,
+              content: '', // 内容设为空字符串
+              createdAt: DateTime.now(),
+            );
+            try {
+              await FileManager.instance.addFile(targetFile);
+              print('创建新文件: ${targetFile.id}');
+            } catch (e) {
+              print('添加文件失败: $e');
+              return;
+            }
+          }
+          
+          // 跳转到翻译展示页面
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TranslateDisplayPage(
+                title: title,
+                fileId: targetFile.id,
+              ),
+            ),
+          );
         },
       ),
       // 注意：这里没有设置showDrawer属性，默认不显示抽屉菜单
@@ -101,16 +201,32 @@ class EnglishToChinesePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 居中显示占位文本
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const TranslateDisplayPage(),
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.translate,
+            size: 64,
+            color: Colors.grey,
+          ),
+          SizedBox(height: 16),
+          Text(
+            '英译中练习',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey,
             ),
-          );
-        },
-        child: const Text('进入翻译展示页'),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '请在文件页面创建新文件开始练习',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -128,16 +244,32 @@ class ChineseToEnglishPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const TranslateDisplayPage(),
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.translate,
+            size: 64,
+            color: Colors.grey,
+          ),
+          SizedBox(height: 16),
+          Text(
+            '中译英练习',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey,
             ),
-          );
-        },
-        child: const Text('进入翻译展示页'),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '请在文件页面创建新文件开始练习',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -155,6 +287,17 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
+  @override
+  void initState() {
+    super.initState();
+    // 初始化文件管理器，从数据库加载数据
+    _initializeFileManager();
+  }
+  
+  Future<void> _initializeFileManager() async {
+    await FileManager.instance.initialize();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -212,9 +355,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          file.content.length > 50
-                              ? '${file.content.substring(0, 50)}...'
-                              : file.content,
+                          file.content.isEmpty
+                              ? '暂无内容'
+                              : (file.content.length > 50
+                                  ? '${file.content.substring(0, 50)}...'
+                                  : file.content),
                           style: const TextStyle(
                             color: Colors.grey,
                           ),
@@ -231,15 +376,27 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     ),
                     trailing: IconButton(
                        icon: const Icon(Icons.delete, color: Colors.red),
-                       onPressed: () {
-                         FileManager.instance.removeFile(file.id);
+                       onPressed: () async {
+                         try {
+                           await FileManager.instance.removeFile(file.id);
+                         } catch (e) {
+                           // 显示错误信息
+                           if (mounted) {
+                             ScaffoldMessenger.of(context).showSnackBar(
+                               SnackBar(content: Text('删除文件失败: $e')),
+                             );
+                           }
+                         }
                        },
                      ),
                     onTap: () {
-                      // 跳转到翻译展示页面
+                      // 跳转到翻译展示页面，传递文件ID
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const TranslateDisplayPage(),
+                          builder: (context) => TranslateDisplayPage(
+                            title: file.title,
+                            fileId: file.id,
+                          ),
                         ),
                       );
                     },
