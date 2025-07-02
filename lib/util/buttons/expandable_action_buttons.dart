@@ -34,6 +34,92 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
   }
 
   // 显示添加文件对话框
+  void _showAddFileDialog() {
+    final titleController = TextEditingController();
+    String selectedType = '英译中'; // 默认类型
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('新增翻译文件'),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        labelText: '文件标题',
+                        hintText: '请输入翻译文件标题',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      value: selectedType,
+                      decoration: const InputDecoration(
+                        labelText: '翻译类型',
+                        border: OutlineInputBorder(),
+                      ),
+                      items: ['英译中', '中译英'].map((String type) {
+                        return DropdownMenuItem<String>(
+                          value: type,
+                          child: Text(type),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedType = newValue!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('取消'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    final title = titleController.text.trim();
+                    
+                    if (title.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('标题不能为空')),
+                      );
+                      return;
+                    }
+                    
+                    // 自动添加类型后缀
+                    final finalTitle = '$title-$selectedType';
+                    
+                    // 调用新增文件回调函数
+                    if (widget.onAddFile != null) {
+                      widget.onAddFile!(finalTitle);
+                    }
+                    
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('翻译文件创建成功')),
+                    );
+                  },
+                  child: const Text('创建'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -56,54 +142,86 @@ class _ExpandableActionButtonsState extends State<ExpandableActionButtons>
   // 显示添加文本对话框
   void _showAddTextDialog() {
     final titleController = TextEditingController();
+    String selectedType = '英译中'; // 默认类型
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('添加文本'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: TextField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                labelText: '标题',
-                hintText: '请输入文件标题',
-                border: OutlineInputBorder(),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('添加翻译文本'),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        labelText: '文件标题',
+                        hintText: '请输入翻译文件标题',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      value: selectedType,
+                      decoration: const InputDecoration(
+                        labelText: '翻译类型',
+                        border: OutlineInputBorder(),
+                      ),
+                      items: ['英译中', '中译英'].map((String type) {
+                        return DropdownMenuItem<String>(
+                          value: type,
+                          child: Text(type),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedType = newValue!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('取消'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final title = titleController.text.trim();
-                
-                if (title.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('标题不能为空')),
-                  );
-                  return;
-                }
-                
-                // 调用回调函数
-                if (widget.onAddText != null) {
-                  widget.onAddText!(title);
-                }
-                
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('文件添加成功')),
-                );
-              },
-              child: const Text('保存'),
-            ),
-          ],
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('取消'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    final title = titleController.text.trim();
+                    
+                    if (title.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('标题不能为空')),
+                      );
+                      return;
+                    }
+                    
+                    // 自动添加类型后缀
+                    final finalTitle = '$title-$selectedType';
+                    
+                    // 调用回调函数
+                    if (widget.onAddText != null) {
+                      widget.onAddText!(finalTitle);
+                    }
+                    
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('翻译文件创建成功')),
+                    );
+                  },
+                  child: const Text('创建'),
+                ),
+              ],
+            );
+          },
         );
       },
     );

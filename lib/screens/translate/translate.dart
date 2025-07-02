@@ -190,8 +190,8 @@ class TranslatePage extends StatelessWidget {
 
 /// 英译中页面
 /// 
-/// 提供英语翻译为中文的练习功能
-/// 目前显示占位内容，等待实际功能实现
+/// 显示所有以"英译中"结尾的翻译文件
+/// 用户可以点击文件进入对应的翻译练习界面
 class EnglishToChinesePage extends StatelessWidget {
   /// 创建一个EnglishToChinesePage实例
   /// 
@@ -200,42 +200,115 @@ class EnglishToChinesePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 居中显示占位文本
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.translate,
-            size: 64,
-            color: Colors.grey,
-          ),
-          SizedBox(height: 16),
-          Text(
-            '英译中练习',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
+    return AnimatedBuilder(
+      animation: FileManager.instance,
+      builder: (context, child) {
+        // 筛选英译中文件
+        final englishToChineseFiles = FileManager.instance.files
+            .where((file) => file.title.endsWith('英译中'))
+            .toList();
+            
+        if (englishToChineseFiles.isEmpty) {
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.translate,
+                  size: 64,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  '暂无英译中文件',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '长按右下角按钮创建新的英译中文件',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            '请在文件页面创建新文件开始练习',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+        
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: englishToChineseFiles.length,
+          itemBuilder: (context, index) {
+            final file = englishToChineseFiles[index];
+            return Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: ListTile(
+                leading: const Icon(
+                  Icons.translate,
+                  color: Colors.blue,
+                ),
+                title: Text(
+                  file.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      file.content.isEmpty
+                          ? '暂无内容'
+                          : (file.content.length > 50
+                              ? '${file.content.substring(0, 50)}...'
+                              : file.content),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '创建时间: ${file.createdAt.year}-${file.createdAt.month.toString().padLeft(2, '0')}-${file.createdAt.day.toString().padLeft(2, '0')} ${file.createdAt.hour.toString().padLeft(2, '0')}:${file.createdAt.minute.toString().padLeft(2, '0')}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.grey,
+                  size: 16,
+                ),
+                onTap: () {
+                  // 跳转到翻译展示页面
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TranslateDisplayPage(
+                        title: file.title,
+                        fileId: file.id,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
 
 /// 中译英页面
 /// 
-/// 提供中文翻译为英语的练习功能
-/// 目前显示占位内容，等待实际功能实现
+/// 显示所有以"中译英"结尾的翻译文件
+/// 用户可以点击文件进入对应的翻译练习界面
 class ChineseToEnglishPage extends StatelessWidget {
   /// 创建一个ChineseToEnglishPage实例
   /// 
@@ -244,33 +317,107 @@ class ChineseToEnglishPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.translate,
-            size: 64,
-            color: Colors.grey,
-          ),
-          SizedBox(height: 16),
-          Text(
-            '中译英练习',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
+    return AnimatedBuilder(
+      animation: FileManager.instance,
+      builder: (context, child) {
+        // 筛选中译英文件
+        final chineseToEnglishFiles = FileManager.instance.files
+            .where((file) => file.title.endsWith('中译英'))
+            .toList();
+            
+        if (chineseToEnglishFiles.isEmpty) {
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.translate,
+                  size: 64,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  '暂无中译英文件',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '长按右下角按钮创建新的中译英文件',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            '请在文件页面创建新文件开始练习',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+        
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: chineseToEnglishFiles.length,
+          itemBuilder: (context, index) {
+            final file = chineseToEnglishFiles[index];
+            return Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: ListTile(
+                leading: const Icon(
+                  Icons.translate,
+                  color: Colors.green,
+                ),
+                title: Text(
+                  file.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      file.content.isEmpty
+                          ? '暂无内容'
+                          : (file.content.length > 50
+                              ? '${file.content.substring(0, 50)}...'
+                              : file.content),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '创建时间: ${file.createdAt.year}-${file.createdAt.month.toString().padLeft(2, '0')}-${file.createdAt.day.toString().padLeft(2, '0')} ${file.createdAt.hour.toString().padLeft(2, '0')}:${file.createdAt.minute.toString().padLeft(2, '0')}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.grey,
+                  size: 16,
+                ),
+                onTap: () {
+                  // 跳转到翻译展示页面
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TranslateDisplayPage(
+                        title: file.title,
+                        fileId: file.id,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -400,7 +547,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         ),
                       );
                     },
-                  ),
+                  ),  
+                  
                 );
               },
              );
@@ -409,6 +557,4 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 }
-
-
 
