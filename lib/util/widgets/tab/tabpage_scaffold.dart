@@ -1,6 +1,6 @@
-import 'package:auralab/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:auralab/screens/drawer/drawer.dart';
+import '../../../widgets/music_player_bar.dart';
+import '../../../screens/drawer/drawer.dart';
 
 /// 通用标签页脚手架
 /// 在应用中多处复用的页面结构组件
@@ -28,6 +28,9 @@ class TabPageScaffold extends StatefulWidget {
   /// 是否显示抽屉菜单
   final bool showDrawer;
 
+  /// 是否显示底部音乐播放器
+  final bool showMusicPlayer;
+
   const TabPageScaffold({
     super.key,
     required this.title,
@@ -37,6 +40,7 @@ class TabPageScaffold extends StatefulWidget {
     this.floatingActionButton,
     this.userName = '', // 默认为空字符串
     this.showDrawer = true, // 默认显示抽屉菜单
+    this.showMusicPlayer = true, // 默认显示音乐播放器
   }) : assert(tabTitles.length == tabPages.length, '标签数量必须与页面数量相同');
 
   @override
@@ -62,37 +66,31 @@ class _TabPageScaffoldState extends State<TabPageScaffold>
 
   @override
   Widget build(BuildContext context) {
-    return 
-      Scaffold(
+    return DefaultTabController(
+      length: widget.tabPages.length,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-          backgroundColor: Colors.grey.shade400, // 设置AppBar背景色
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(widget.titleIcon, color: Colors.black), // 标题图标
-              const SizedBox(width: 5), // 图标和文字间距
-              Text(widget.title,
-                  style: const TextStyle(color: Colors.black)), // 标题文字
-              const SizedBox(width: 15), // 右侧间距
-            ],
-          ),
-          centerTitle: true, // 标题居中
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.black), // 搜索图标
-              onPressed: () {
-                // 使用命名路由导航到搜索页面
-                Navigator.pushNamed(context, AppRoutes.search);
-              },
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          elevation: 0,
+          title: Text(
+            widget.title,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontWeight: FontWeight.bold,
             ),
-          ],
+          ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           bottom: TabBar(
             controller: _tabController,
             tabs: widget.tabTitles.map((title) => Tab(text: title)).toList(),
-            labelColor: Colors.black, // 选中标签文字颜色
-            unselectedLabelColor: Colors.white, // 未选中标签文字颜色
+            labelColor: Theme.of(context).colorScheme.onSurface,
+            unselectedLabelColor:
+                Theme.of(context).colorScheme.onSurface.withAlpha(153),
             indicator: BoxDecoration(
-              color: Colors.white, // 选中标签背景色
+              color: Theme.of(context).colorScheme.primary.withAlpha(51),
               borderRadius: BorderRadius.circular(15), // 圆角边框
             ),
             indicatorSize: TabBarIndicatorSize.tab,
@@ -107,22 +105,44 @@ class _TabPageScaffoldState extends State<TabPageScaffold>
         body: Stack(
           children: [
             // 主要内容区域
-            Padding(
-              padding: const EdgeInsets.all(10), // 内容区域内边距
-              child: TabBarView(
-                controller: _tabController,
-                children: widget.tabPages,
-              ),
+            Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10), // 内容区域内边距
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: widget.tabPages,
+                    ),
+                  ),
+                ),
+                // 底部播放器区域
+                if (widget.showMusicPlayer)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0, left: 16.0, right: 16.0),
+                    child: SizedBox(
+                      height: 80, // 与MusicPlayerBar高度一致
+                      child: const MusicPlayerBar(
+                        hasAudio: false, // 默认无音频状态
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            // 浮动按钮
+            // 悬浮按钮 - 使用Positioned定位到右下角
             if (widget.floatingActionButton != null)
-              widget.floatingActionButton!,
+              Positioned(
+                right: 16,
+                bottom: widget.showMusicPlayer ? 92 : 16, // 如果有播放器则在播放器上方
+                child: widget.floatingActionButton!,
+              ),
           ],
         ),
         drawer:
             widget.showDrawer ? DrawerMenu(userName: widget.userName) : null,
         drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
-      );
+      ),
+    );
     
   }
 }

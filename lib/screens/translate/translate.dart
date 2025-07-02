@@ -547,7 +547,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         ),
                       );
                     },
-                  ),
+                  ),  
+                  
                 );
               },
              );
@@ -556,6 +557,4 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 }
-
-
 
